@@ -55,12 +55,16 @@
   ### V2 (RAG)
   Developer → Web Interface → Flask Backend
                                     │
+                                    
                             ┌───────┴────────┐
                             ▼                ▼
+                            
                     Google Gemini    ChromaDB (Clean ABAP)
+                    
                             │                │
                             └───────┬────────┘
                                     ▼
+                                    
                             Grounded Code Review
 
   ---
