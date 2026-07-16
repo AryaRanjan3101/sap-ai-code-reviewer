@@ -1,106 +1,110 @@
-# SAP AI Code Reviewer
+ # SAP AI Code Reviewer
+  
+  An AI-powered developer assistant for SAP ABAP developers that reviews ABAP code against official SAP Clean
+  ABAP guidelines and modern S/4HANA development best practices.
 
-An AI-powered developer assistant for SAP ABAP developers that reviews ABAP code, explains potential ATC findings in simple language, and recommends modern SAP development best practices.
+  ## Why This Project?
 
----
+  SAP developers frequently use tools like ATC and Code Inspector to identify issues in ABAP programs. While
+  these tools are excellent at detecting problems, understanding the reason behind an issue and finding the
+  right solution can still take time.
 
-## Why This Project?
+  SAP AI Code Reviewer bridges that gap by using Generative AI to:
 
-SAP developers frequently use tools like ATC and Code Inspector to identify issues in ABAP programs. While these tools are excellent at detecting problems, understanding the reason behind an issue and finding the right solution can still take time.
+  - Explain code quality issues in plain language
+  - Suggest modern ABAP and Clean ABAP improvements
+  - Recommend performance optimizations
+  - Highlight security vulnerabilities and S/4HANA Clean Core violations
 
-SAP AI Code Reviewer aims to bridge that gap by using Generative AI to:
+  The goal is not to replace ATC, but to help developers understand and resolve findings more efficiently.
+  
+  ---
 
-* Explain code quality issues in simple language
-* Suggest modern ABAP and Clean ABAP improvements
-* Recommend performance optimizations
-* Highlight security and S/4HANA best practices
+  ## Versions
 
-The goal is not to replace ATC, but to help developers understand and resolve findings more efficiently.
+  ### V1 — Prompt-Based AI Reviewer (`/`)
+  The first version uses a carefully engineered system prompt with embedded SAP best practices to review ABAP
+  code using Google Gemini 2.5 Flash.
+  
+  **Covers:**
+  - Performance issues (SELECT *, nested SELECTs, missing WHERE clauses)
+  - Modern ABAP (inline declarations, string templates, FIELD-SYMBOL)
+  - Object-Oriented ABAP principles
+  - Security (authority checks, dynamic SQL)
+  - S/4HANA Clean Core compliance
+  - Overall rating out of 10
 
----
+  ### V2 — RAG-Based Reviewer (`/v2`)
+  The second version introduces Retrieval-Augmented Generation (RAG). Before reviewing code, the system searches
+   SAP's official Clean ABAP Style Guide and retrieves the most relevant guidelines. These are passed to Gemini 
+  alongside the code, making reviews grounded in SAP's official documentation.
 
-## Features
+  **Additional capabilities:**
+  - Reviews code against SAP's official Clean ABAP Style Guide
+  - Cites specific guidelines in the review output
+  - More accurate and authoritative recommendations
+  - Local embeddings using HuggingFace (no additional API quota needed)
 
-* AI-powered ABAP code review
-* Performance recommendations
-* Modern ABAP best practices
-* Object-Oriented ABAP suggestions
-* Security checks
-* Clean Core and S/4HANA recommendations
-* Overall code quality assessment
+  ---
 
----
+  ## Architecture
 
-## Tech Stack
+  ### V1
+  Developer → Web Interface → Flask Backend → Google Gemini → Structured Review
+  
+  ### V2 (RAG)
+  Developer → Web Interface → Flask Backend
+                                    │
+                            ┌───────┴────────┐
+                            ▼                ▼
+                    Google Gemini    ChromaDB (Clean ABAP)
+                            │                │
+                            └───────┬────────┘
+                                    ▼
+                            Grounded Code Review
 
-* Python
-* Flask
-* Google Gemini 2.5 Flash
-* HTML
-* SAP BTP Business Application Studio
+  ---
+  
+  ## Tech Stack
 
----
+  - Python + Flask
+  - Google Gemini 2.5 Flash
+  - HuggingFace Sentence Transformers (embeddings)
+  - ChromaDB (vector database)  
+  - SAP BTP Business Application Studio
+  - HTML / CSS / JavaScript
 
-## Current Architecture
+  ---
+  
+  ## Installation
 
-```text
-Developer
-      │
-      ▼
-Web Interface
-      │
-      ▼
-Flask Backend
-      │
-      ▼
-Google Gemini
-      │
-      ▼
-Structured Code Review
-```
+  ```bash
+  git clone https://github.com/AryaRanjan3101/sap-ai-code-reviewer.git
+  cd sap-ai-code-reviewer
+  pip install -r requirements.txt
+  export GOOGLE_API_KEY=your_api_key
 
----
+  Run V1:
+  python app.py
 
-## Future Roadmap
+  Run V2:
+  cd v2
+  python app.py
 
-* FastAPI migration
-* Docker support
-* Retrieval-Augmented Generation (RAG)
-* Structured JSON responses
-* GitHub Pull Request review
-* SAP BTP deployment enhancements
-* SAP developer knowledge base
+  ---
+  Future Roadmap
+  
+  - ATC finding explainer — paste ATC message, get plain English explanation
+  - ABAP to Modern ABAP converter
+  - ABAP HTTP client to call reviewer directly from SAP system
+  - FastAPI migration
+  - Docker support
+  - GitHub Pull Request integration
 
----
-## Installation
+  ---
+  Author
 
-Clone the repository:
-
-```bash
-git clone https://github.com/AryaRanjan3101/sap-ai-code-reviewer.git
-cd sap-ai-code-reviewer
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Configure your API key:
-
-```bash
-export GOOGLE_API_KEY=your_api_key
-```
-
-Run the application:
-
-```bash
-python app.py
-```
-
-## Author
-
-**Arya Ranjan**
-
-SAP ABAP Developer passionate about Enterprise AI, SAP BTP, and building AI-powered developer tools.
+  Arya Ranjan
+  SAP ABAP Developer | SAP BTP | Generative AI
+  LinkedIn (https://www.linkedin.com/in/aryaranjan1) | GitHub (https://github.com/AryaRanjan3101)
+  
